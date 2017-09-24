@@ -11,4 +11,8 @@ public:
 	void set_trials(int t);
 	bool decre_trials(); // trials > 0 return true else false
 	void get_change(int &x, int &y, int &fig) const;
+	void display(char * s);
+	int get_trials() const {
+		return trials;
+	}
 };

@@ -6,13 +6,14 @@
 #pragma once
 
 #include "targetver.h"
-
+#include <vector>
 #include <stdio.h>
 #include <tchar.h>
-#include "stack.h"
 #include "change.h"
+#include "stack.h"
 #include "point.h"
 #include "matrix.h"
+#include <string.h>
 #include <iostream>
 
 // TODO: 在此处引用程序需要的其他头文件

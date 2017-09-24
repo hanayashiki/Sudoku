@@ -7,6 +7,9 @@ Stack::Stack()
 
 bool Stack::isempty() const
 {
+	if (top == 0) {
+		std::cout << "stack empty" << std::endl;
+	}
 	return top == 0;
 }
 
@@ -24,6 +27,8 @@ bool Stack::push(const Item & item)
 	}
 	else 
 	{
+		std::cout << "stack full" << std::endl;
+		getchar();
 		return false;
 	}
 }
@@ -33,6 +38,21 @@ bool Stack::pop(Item & item)
 	if (top > 0)
 	{
 		item = items[--top];
+		return true;
+	}
+	else
+	{
+		std::cout << "stack pop failed" << std::endl;
+		getchar();
+		return false;
+	}
+}
+
+bool Stack::get_top(Item & item) const
+{
+	if (top > 0)
+	{
+		item = items[top-1];
 		return true;
 	}
 	else
