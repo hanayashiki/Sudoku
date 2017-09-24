@@ -100,12 +100,9 @@ void Matrix::display() const {
 	}
 }
 
-Point * Matrix::get_min_point(int & x, int & y, int & c_count) {
+Point * Matrix::get_min_point() {
 	Point * min_p = NULL;
 	int min_count = 9999;
-	x = 0;
-	y = 0;
-	c_count = 0;
 	for (int i = 1; i <= 9; i++) {
 		for (int j = 1; j <= 9; j++) {
 			int count = set_point_candi(i, j);
@@ -114,9 +111,6 @@ Point * Matrix::get_min_point(int & x, int & y, int & c_count) {
 				//std::cout << "min changed! " << std::endl;
 				min_p = &table[i - 1][j - 1];
 				min_count = count;
-				x = i;
-				y = j;
-				c_count = min_count;
 				//display();
 			}
 		}

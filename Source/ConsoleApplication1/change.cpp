@@ -9,21 +9,13 @@ Change::Change(int x, int y, int num) {
 	tg_x = x;
 	tg_y = y;
 	fill_num = num;
+	base = NULL;
+	fchild = NULL;
+	next = NULL;
+	expanded = false;
+	validity = true;
 }
 
-bool Change::decre_trials() {
-	if (trials > 0) {
-		trials--;
-		return true;
-	}
-	else {
-		return false;
-	}
-}
-
-void Change::set_trials(int t) {
-	trials = t;
-}
 
 void Change::get_change(int & x, int & y, int & fig) const{
 	x = tg_x;
@@ -32,5 +24,5 @@ void Change::get_change(int & x, int & y, int & fig) const{
 }
 
 void Change::display(char *s) {
-	std::cout << s << "(" << tg_x << ", " << tg_y << ", " << fill_num << ", " << trials <<")" << std::endl;
+	std::cout << s << "(" << tg_x << ", " << tg_y << ", " << fill_num << ", " << validity <<")" << std::endl;
 }

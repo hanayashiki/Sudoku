@@ -10,7 +10,7 @@ public:
 	void fill_in(Change* c);
 	bool roll_back(Change* c);
 	void display() const;
-	Point* get_min_point(int & x, int & y, int & count);
+	Point* get_min_point();
 	int set_point_candi(int i, int j);
 	int get_point_value(int i, int j) const;
 	void fill_in_figure(int i, int j, int f);

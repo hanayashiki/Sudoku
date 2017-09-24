@@ -7,8 +7,6 @@ using namespace std;
 FILE* input;
 
 Matrix matrix = Matrix();
-Stack changes = Stack();
-Stack roll_back = Stack();
 
 int read_argv(int argc, char** argv);
 
@@ -25,6 +23,8 @@ int main(int argc, char** argv)
 		solve();
 	}
 	fclose(input);
+	cout << "result:";
+	matrix.display();
 	cout << "vcheck: " << matrix.check_validity() << endl;
 	getchar();
     return 0;
@@ -54,86 +54,54 @@ void read_file(FILE* f)
 	matrix.display();
 }
 
+void multi_print(char c, int n) {
+	for (int i = 0; i < n; i++) {
+		cout << c;
+	}
+}
+
 void solve() {
+	int level = 0;
 	int x, y, count;
+	bool first;
 	char candi_buf[10] = "";
-	Point * p = NULL;
 	//
 	//cout << x << ", " << y << ", " << count << endl;
-	while (true)
-	{
-		matrix.get_min_point(x, y, count);
-		vector<Point *> ranking = matrix.rank();
-		int ranking_size = ranking.size();
-		if (ranking_size == 0) {
-			p = NULL;
-			goto rollback;
-		}
-		//cout << "changes add " << ranking_size << "elements." << endl;
-		for (int i = ranking_size-1; i >= 0; i--) {
-			p = ranking.at(i);
+	//1. build up root
+	//2. get a min point, if failed, rollback root's change, 
+	//   try root.next (if null, rollback) or root.base (not null, otherwise quit)
+	//3. build possible changes, linking them to the root, mark root as expanded
+	//4. set now to be root's fchild
+	//5. implement change
+	//6. go to 2
+	Change* root = new Change(0, 0, 0);
+	Change* now;
+	while (true) {
+		Point* p = matrix.get_min_point();
+		if (p) {
+			Change* new_change = NULL;
+			Change* last_change = NULL;
 			p->show_candidates(candi_buf);
-			//cout << "get candidates: " << candi_buf;
-			int point_x, point_y;
-			p->get_pos(&point_x, &point_y);
-			for (int i = 0; candi_buf[i] != '\0'; i++)
-			{
-				int to_fill = candi_buf[i] - '0';
-				Change* subchange = new Change(point_x, point_y, to_fill);
-				changes.push(subchange);
-				//std::cout << "push " << i << endl;
+			for (int i = 0; candi_buf[i] != 0; i++) {
+				int x, y;
+				p->get_pos(&x, &y);
+				new_change = new Change(x, y, candi_buf[i] - '0');
+				new_change->set_next(last_change);
+				new_change->set_base(root);
+				last_change = new_change;
+			}
+			root->set_fchild(new_change);
+			if (first) {
+				first = false;
+				now = root->get_fchild();
+			}
+			matrix.fill_in(now);
+			if (matrix.get_zeroes() == 0) {
+				return;
 			}
 		}
-		Change* change_imple;
-		changes.pop(change_imple);
-		matrix.fill_in(change_imple);
-		//cout << "fill in:" << endl;
-		//matrix.display();
-		p = matrix.get_min_point(x, y, count);
-		change_imple->set_trials(count);
-		change_imple->display("Augment1: ");
-		roll_back.push(change_imple);
-
-		rollback:
-		if (matrix.get_zeroes() == 0) {
-			cout << "result:" << endl;
-			matrix.display();
-			return;
-		}
-		if (p == NULL)
-		{
-			Change* stack_top;
-			cout << "No trials" << endl;
-			matrix.display();
-			cout << matrix.get_zeroes() << endl;
-			while (true) {
-				if (roll_back.get_top(stack_top))
-				{
-					stack_top->decre_trials();
-					if (stack_top->get_trials() <= 0)
-					{
-						cout << "matrix rollback." << endl;
-						roll_back.pop(stack_top);
-						matrix.roll_back(stack_top);
-						stack_top->display("Roll back: ");
-						delete stack_top;
-					}
-					else {
-						break;
-					}
-				}
-				else {
-					break;
-				}
-			}
-			changes.pop(stack_top);
-			matrix.fill_in(stack_top);
-			p = matrix.get_min_point(x, y, count);
-			stack_top->set_trials(count);
-			roll_back.push(stack_top);
-			stack_top->display("Augment2: ");
-			matrix.display();
-			//getchar();
+		else {
+			//...todo: rollback
 		}
 	}
 }
