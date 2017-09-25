@@ -12,6 +12,12 @@ public:
 	void fill_in(int c);
 	void init_candi();
 	bool remove_candi(int f); // f is the candidate itself.
+	void set_candidates(int avail) {
+		for (int i = 0; i < 9; i++) {
+			avail = avail >> 1;
+			candidates[i] = (avail & 0x1) == 1;
+		}
+	}
 	int get_candi_count() const{
 		return figure == 0 ? candi_count : 10;
 	}

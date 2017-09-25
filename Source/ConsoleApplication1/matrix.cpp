@@ -91,6 +91,8 @@ int Matrix::get_point_candi_fast(int x, int y) {
 	int n = group_vectors[(x - 1) / 3][(y - 1) / 3] |
 		row_vectors[x - 1] | column_vectors[y - 1];
 	///count 1
+	// n's ones record figures taken up
+	table[x - 1][y - 1].set_candidates(~n);
 
 	const int MASK1 = 0x55555555;
 	const int MASK2 = 0x33333333;
@@ -193,10 +195,10 @@ Point * Matrix::get_min_point_fast() {
 			}
 		}
 	}
-	if (min_p) {
+	//if (min_p) {
 		//std::cout << "got count " << min_x << ", " << min_y << " = " << min_count << std::endl;
-		set_point_candi(min_x, min_y);
-	}
+		//set_point_candi(min_x, min_y);
+	//}
 	return min_p;
 }
 

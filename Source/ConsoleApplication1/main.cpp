@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include <iostream>
-#define DEBUG 1
+#define DEBUG 0
 #define DEBUG2 0
 const int CREATE = 1;
 const int SOLVE = 2;
@@ -17,8 +17,25 @@ Change* root = new Change(0, 0, 0);
 int read_argv(int argc, char** argv);
 
 void solve();
+void create(int c);
+
+void create_fill_in(int*);
 
 bool read_file(FILE* f);
+
+#define random(x) (rand()%x)
+
+void shuffle(char* str) {
+	int l = strlen(str);
+	for (int i = 0; i < l; i++) {
+		int r = random(l);
+		char randc = str[r];
+		char tmp = str[i];
+		str[i] = randc;
+		str[r] = tmp;
+	}
+	//cout << str << endl;
+}
 
 int main(int argc, char** argv)
 {
@@ -40,6 +57,18 @@ int main(int argc, char** argv)
 			root = new Change(0, 0, 0);
 		}
 	}
+	else if (mission == CREATE) {
+		int count = 0;
+		int r = sscanf_s(argv[2], "%d", &count);
+		cout << "create." << endl;
+		if (r > 0) {
+			create(count);
+		}
+		else {
+			cout << "Input error. -c should be followed by an integer." << endl;
+			exit(0);
+		}
+	}
 	fclose(input);
 	fclose(output);
 	if (DEBUG) cout << "finished" << endl;
@@ -52,7 +81,7 @@ int read_argv(int argc, char** argv)
 	if (strcmp("-s", argv[1]) == 0) {
 		return SOLVE;
 	}
-	else {
+	else if (strcmp("-c", argv[1]) == 0) {
 		return CREATE;
 	}
 }
@@ -103,6 +132,9 @@ void solve() {
 			Change* new_change = NULL;
 			Change* last_change = NULL;
 			p->show_candidates(candi_buf);
+			//cout << candi_buf << " => ";
+			//shuffle(candi_buf);
+			//cout << candi_buf << endl;
 			if (DEBUG2) cout << "candi_buf:" << candi_buf;
 			int x, y;
 			p->get_pos(&x, &y);
@@ -150,4 +182,47 @@ void solve() {
 			//now->display("fill in:");
 		}
 	}
+}
+
+void create(int count) {
+	int gene[9] = { 0 };
+	for (gene[1] = 1; gene[1] <= 9; gene[1]++) {
+		for (gene[2] = 1; gene[2] <= 9; gene[2]++) {
+			for (gene[3] = 1; gene[3] <= 9; gene[3]++) {
+				for (gene[4] = 1; gene[4] <= 9; gene[4]++) {
+					for (gene[5] = 1; gene[5] <= 9; gene[5]++) {
+						for (gene[6] = 1; gene[6] <= 9; gene[6]++) {
+							for (gene[7] = 1; gene[7] <= 9; gene[7]++) {
+								for (gene[8] = 1; gene[8] <= 9; gene[8]++) {
+									if (count-- > 0) {
+										matrix = Matrix();
+										root = new Change(0, 0, 0);
+										create_fill_in(gene);
+										matrix.display();
+										solve();
+										matrix.display();
+										matrix.dump(output);
+										root->clean(root);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+void create_fill_in(int* gene) {
+	//id (7+7)%9 + 1
+	matrix.fill_in_figure(1, 1, (7 + 7) % 9 + 1);
+	matrix.fill_in_figure(2, 4, gene[1]);
+	matrix.fill_in_figure(3, 7, gene[2]);
+	matrix.fill_in_figure(4, 2, gene[3]);
+	matrix.fill_in_figure(5, 6, gene[4]);
+	matrix.fill_in_figure(6, 8, gene[5]);
+	matrix.fill_in_figure(7, 3, gene[6]);
+	matrix.fill_in_figure(8, 5, gene[7]);
+	matrix.fill_in_figure(9, 9, gene[8]);
 }
