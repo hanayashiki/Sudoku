@@ -111,7 +111,7 @@ int Matrix::get_point_candi_fast(int x, int y) {
 	return 9 - n;
 }
 
-inline int Matrix::get_point_value(int x, int y) const {
+int Matrix::get_point_value(int x, int y) const {
 	const Point & tg_point = table[x - 1][y - 1];
 	return tg_point.get_figure();
 }
@@ -154,8 +154,7 @@ void Matrix::dump(FILE* f) const {
 	fprintf(f, "\n");
 }
 
-
-Point * Matrix::get_min_point() {
+/*Point * Matrix::get_min_point() {
 	Point * min_p = NULL;
 	int min_count = 9999;
 	for (int i = 1; i <= 9; i++) {
@@ -173,7 +172,7 @@ Point * Matrix::get_min_point() {
 		}
 	}
 	return min_p;
-}
+}*/
 
 Point * Matrix::get_min_point_fast() {
 	Point * min_p = NULL;
@@ -190,6 +189,9 @@ Point * Matrix::get_min_point_fast() {
 					min_count = count;
 					min_x = i;
 					min_y = j;
+					if (count == 1) {
+						return min_p;
+					}
 					//display();
 				}
 			}
@@ -276,4 +278,24 @@ bool Matrix::check_validity() const{
 		}
 	}
 	return true;
+}
+
+void Matrix::switch_row(int i, int j) {
+	for (int k = 1; k <= 9; k++) {
+		int i_value = get_point_value(i, k);
+		int j_value = get_point_value(j, k);
+		int tmp = i_value;
+		fill_in_figure(i, k, j_value);
+		fill_in_figure(j, k, tmp);
+	}
+}
+
+void Matrix::switch_column(int i, int j) {
+	for (int k = 1; k <= 9; k++) {
+		int i_value = get_point_value(k, i);
+		int j_value = get_point_value(k, j);
+		int tmp = i_value;
+		fill_in_figure(k, i, j_value);
+		fill_in_figure(k, j, tmp);
+	}
 }
