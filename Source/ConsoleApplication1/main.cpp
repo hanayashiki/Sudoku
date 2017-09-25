@@ -23,7 +23,7 @@ int main(int argc, char** argv)
 		solve();
 	}
 	fclose(input);
-	cout << "result:";
+	cout << "result:" << endl;
 	matrix.display();
 	cout << "vcheck: " << matrix.check_validity() << endl;
 	getchar();
@@ -63,7 +63,7 @@ void multi_print(char c, int n) {
 void solve() {
 	int level = 0;
 	int x, y, count;
-	bool first;
+	bool first = true;
 	char candi_buf[10] = "";
 	//
 	//cout << x << ", " << y << ", " << count << endl;
@@ -75,33 +75,51 @@ void solve() {
 	//5. implement change
 	//6. go to 2
 	Change* root = new Change(0, 0, 0);
-	Change* now;
+	Change* now = root;
 	while (true) {
 		Point* p = matrix.get_min_point();
 		if (p) {
 			Change* new_change = NULL;
 			Change* last_change = NULL;
 			p->show_candidates(candi_buf);
+			int x, y;
+			p->get_pos(&x, &y);
+			//cout << "min at (" << x << ", " << y << ")" << endl;
 			for (int i = 0; candi_buf[i] != 0; i++) {
-				int x, y;
-				p->get_pos(&x, &y);
 				new_change = new Change(x, y, candi_buf[i] - '0');
 				new_change->set_next(last_change);
-				new_change->set_base(root);
+				new_change->set_base(now);
 				last_change = new_change;
 			}
-			root->set_fchild(new_change);
-			if (first) {
-				first = false;
-				now = root->get_fchild();
-			}
+			now->set_fchild(new_change);
+			now = now->get_fchild();
 			matrix.fill_in(now);
+			//now->display("fill in:");
+			//matrix.display();
 			if (matrix.get_zeroes() == 0) {
 				return;
 			}
 		}
 		else {
 			//...todo: rollback
+			//now->display("roll back:");
+			matrix.roll_back(now);
+			if (now->get_next() != NULL) {
+				now = now->get_next();
+			}
+			else {
+				while (now->get_base()) {
+					//now->get_base()->display("roll back:");
+					matrix.roll_back(now->get_base());
+					if (now->get_base()->get_next() != NULL) {
+						now = now->get_base()->get_next();
+						break;
+					}
+					now = now->get_base();
+				}
+			}
+			matrix.fill_in(now);
+			//now->display("fill in:");
 		}
 	}
 }
