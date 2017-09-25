@@ -37,10 +37,18 @@ public:
 	void clean(Change* c) {
 		if (c->get_fchild()) {
 			clean(c->get_fchild());
+//			c->set_fchild(NULL);
 		}
 		if (c->get_next()) {
 			clean(c->get_next());
+//			c->set_next(NULL);
 		}
 		delete c;
+	}
+	void clean_desc(Change* c) {
+		if (c->get_fchild()) {
+			clean(c->get_fchild());
+//			c->set_fchild(NULL);
+		}
 	}
 };

@@ -9,6 +9,15 @@ Matrix::Matrix() {
 	}
 }
 
+void Matrix::reset() {
+	zeroes = 81;
+	for (int i = 1; i <= 9; i++) {
+		for (int j = 1; j <= 9; j++) {
+			table[i - 1][j - 1].init_candi();
+		}
+	}
+}
+
 void Matrix::fill_in(Change* c) {
 	int x, y, figure;
 	c->get_change(x, y, figure);
@@ -106,18 +115,31 @@ void Matrix::display() const {
 	}
 }
 
+void Matrix::dump(FILE* f) const {
+	for (int i = 1; i <= 9; i++) {
+		for (int j = 1; j <= 9; j++) {
+			fprintf(f, "%d", get_point_value(i, j));
+			fprintf(f, "%c", (j == 9 ? '\n' : ' '));
+		}
+	}
+	fprintf(f, "\n");
+}
+
+
 Point * Matrix::get_min_point() {
 	Point * min_p = NULL;
 	int min_count = 9999;
 	for (int i = 1; i <= 9; i++) {
 		for (int j = 1; j <= 9; j++) {
-			int count = set_point_candi(i, j);
-			if (count < min_count && get_point_value(i, j) == 0 && count != 0) {
-				//display();
-				//std::cout << "min changed! " << std::endl;
-				min_p = &table[i - 1][j - 1];
-				min_count = count;
-				//display();
+			if (get_point_value(i, j) == 0) {
+				int count = set_point_candi(i, j);
+				if (count < min_count && count != 0) {
+					//display();
+					//std::cout << "min changed! " << std::endl;
+					min_p = &table[i - 1][j - 1];
+					min_count = count;
+					//display();
+				}
 			}
 		}
 	}

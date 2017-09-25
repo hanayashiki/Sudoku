@@ -7,9 +7,11 @@ private:
 	std::vector <Point*> ranking;
 public:
 	Matrix();
+	void reset();
 	void fill_in(Change* c);
 	bool roll_back(Change* c);
 	void display() const;
+	void dump(FILE* f) const;
 	Point* get_min_point();
 	int set_point_candi(int i, int j);
 	inline int get_point_value(int i, int j) const;
