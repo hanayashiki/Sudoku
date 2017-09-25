@@ -7,6 +7,7 @@ using namespace std;
 FILE* input;
 
 Matrix matrix = Matrix();
+Change* root = new Change(0, 0, 0);
 
 int read_argv(int argc, char** argv);
 
@@ -25,6 +26,7 @@ int main(int argc, char** argv)
 	fclose(input);
 	cout << "result:" << endl;
 	matrix.display();
+	root->clean(root);
 	cout << "vcheck: " << matrix.check_validity() << endl;
 	getchar();
     return 0;
@@ -74,7 +76,6 @@ void solve() {
 	//4. set now to be root's fchild
 	//5. implement change
 	//6. go to 2
-	Change* root = new Change(0, 0, 0);
 	Change* now = root;
 	while (true) {
 		Point* p = matrix.get_min_point();

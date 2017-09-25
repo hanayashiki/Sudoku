@@ -15,7 +15,7 @@ public:
 	int get_candi_count() const{
 		return figure == 0 ? candi_count : 10;
 	}
-	int get_figure() const {
+	inline int get_figure() const {
 		return figure;
 	}
 	void show_candidates(char* buf) const {

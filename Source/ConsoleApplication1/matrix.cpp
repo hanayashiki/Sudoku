@@ -35,13 +35,19 @@ int Matrix::set_point_candi(int x, int y) {
 	int group_y = zero_y / 3;
 	int v = 0;
 	Point & tg_point = table[x-1][y-1];
+	int point_cache[10][10];
+	for (int i = 1; i < 10; i++) {
+		for (int j = 1; j < 10; j++) {
+			point_cache[i][j] = get_point_value(i, j);
+		}
+	}
 	tg_point.init_candi();
 	// search local group
 	for (int i = 0; i < 3; i++) {
+		int x1 = 3 * group_x + i + 1;
 		for (int j = 0; j < 3; j++) {
-			int x1 = 3 * group_x + i + 1;
 			int y1 = 3 * group_y + j + 1;
-			v = get_point_value(3*group_x + i + 1,3*group_y + j + 1);
+			v = point_cache[x1][y1];
 			//std::cout << "(" << x << ", " << y << ")" << " checking " << v << " at (" << x1 << ", "<< y1 << ")" << std::endl;
 			if (v != 0) {
 				//if ((x == 1 && y == 3) || (x == 2 && y == 1))
@@ -55,14 +61,14 @@ int Matrix::set_point_candi(int x, int y) {
 	}
 	// check the line
 	for (int i = 1; i <= 9; i++) {
-		v = get_point_value(i, y);
+		v = point_cache[i][y];
 		if (v != 0) {
 			tg_point.remove_candi(v);
 		}
 	}
 	// check the row
 	for (int j = 1; j <= 9; j++) {
-		v = get_point_value(x, j);
+		v = point_cache[x][j];
 		if (v != 0) {
 			tg_point.remove_candi(v);
 		}
@@ -70,7 +76,7 @@ int Matrix::set_point_candi(int x, int y) {
 	return tg_point.get_candi_count();
 }
 
-int Matrix::get_point_value(int x, int y) const {
+inline int Matrix::get_point_value(int x, int y) const {
 	const Point & tg_point = table[x - 1][y - 1];
 	return tg_point.get_figure();
 }

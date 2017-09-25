@@ -34,4 +34,13 @@ public:
 	Change* get_fchild() {
 		return fchild;
 	}
+	void clean(Change* c) {
+		if (c->get_fchild()) {
+			clean(c->get_fchild());
+		}
+		if (c->get_next()) {
+			clean(c->get_next());
+		}
+		delete c;
+	}
 };
