@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include <iostream>
 #define DEBUG 1
+#define DEBUG2 0
 const int CREATE = 1;
 const int SOLVE = 2;
 using namespace std;
@@ -31,10 +32,11 @@ int main(int argc, char** argv)
 			if (DEBUG) matrix.display();
 			solve();
 			matrix.dump(output);
-			if (DEBUG) cout << "result:" << endl;
+			if (DEBUG) cout << "result " << case_ << ": " << endl;
 			if (DEBUG) matrix.display();
 			if (DEBUG) cout << "vcheck: " << matrix.check_validity() << endl;
 			root->clean(root);
+			matrix = Matrix();
 			root = new Change(0, 0, 0);
 		}
 	}
@@ -58,7 +60,6 @@ int read_argv(int argc, char** argv)
 bool read_file(FILE* f)
 {
 	int readin = 0;
-	matrix.reset();
 	for (int i = 1; i <= 9; i++) 
 	{
 		for (int j = 1; j <= 9; j++) 
@@ -95,19 +96,16 @@ void solve() {
 	//6. go to 2
 	//
 	Change* now = root;
-	//if (DEBUG) cout << "Start solving" << endl;
 	while (true) {
 		repeat++;
-		//if (DEBUG && (repeat % 10000 == 0)) cout << "repeat: " << repeat << endl;
-		Point* p = matrix.get_min_point();
+		Point* p = matrix.get_min_point_fast();
 		if (p) {
 			Change* new_change = NULL;
 			Change* last_change = NULL;
 			p->show_candidates(candi_buf);
+			if (DEBUG2) cout << "candi_buf:" << candi_buf;
 			int x, y;
 			p->get_pos(&x, &y);
-			//cout << "min at (" << x << ", " << y << ")" << endl;
-			//if (DEBUG && (case_==2)) cout << "subtree: " << strlen(candi_buf) << endl;
 			for (int i = 0; candi_buf[i] != 0; i++) {
 				new_change = new Change(x, y, candi_buf[i] - '0');
 				new_change->set_next(last_change);
@@ -115,10 +113,14 @@ void solve() {
 				last_change = new_change;
 			}
 			now->set_fchild(new_change);
+			if (now == NULL) {
+				matrix.display();
+				exit(1);
+			}
 			now = now->get_fchild();
 			matrix.fill_in(now);
-			//now->display("fill in:");
-			//matrix.display();
+			if (DEBUG2) now->display("fill in:");
+			if (DEBUG2) matrix.display();
 			if (matrix.get_zeroes() == 0) {
 				return;
 			}
