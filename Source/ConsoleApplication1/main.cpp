@@ -175,7 +175,7 @@ void create(int gene_count) {
 				if (DEBUG2) matrix.display();
 				if (matrix.get_zeroes() == 0) {
 					matrix.dump(output);
-					fprintf(output, "\n");
+					//fprintf(output, "\n");
 					if (--gene_count == 0) {
 						return;
 					}
