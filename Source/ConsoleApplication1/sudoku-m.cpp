@@ -12,12 +12,13 @@ vector<vector<int>> sudoku2matrix(int sudoku[9][9]) {
 			do {
 				if (entry == 0)
 					fill++;
+				//cout << (3 * (i / 3) + j / 3) << endl;
 			    vector<int> new_row(81 + 9 * 9 + 9 * 9 + 9 * 9, 0);
 				int pos = 9 * i + j;
 				new_row[pos] = 1;
 				new_row[81 + i * 9 + fill - 1] = 1;
 				new_row[81 + 81 + j * 9 + fill - 1] = 1;
-				new_row[81 + 81 + 81 + (3 * (i / 3) + j % 3) * 9 + fill - 1] = 1;
+				new_row[81 + 81 + 81 + (3 * (i / 3) + j / 3) * 9 + fill - 1] = 1;
 				mat.push_back(new_row);
 			} while ((entry == 0) && (fill < 9));
 		}
@@ -26,7 +27,7 @@ vector<vector<int>> sudoku2matrix(int sudoku[9][9]) {
 }
 
 void print_matrix(vector<vector<int>> & m) {
-	for (int i = 0; i < m.size(); i++) {
+	for (unsigned int i = 0; i < m.size(); i++) {
 		for (int j = 0; j < 324; j++) {
 			cout << m[i][j];
 		}
@@ -62,6 +63,28 @@ void print_sudoku(int sudoku[9][9]) {
 		for (int j = 0; j < 9; j++)
 		{
 			std::cout << sudoku[i][j] << (j == 8 ? '\n' : ' ');
+		}
+	}
+}
+
+void DLX_solve(int sudoku[9][9]) {
+	vector<vector<int>> mat = sudoku2matrix(sudoku);
+	//cout << "mat.size: " << mat.size() << endl;
+	DLX dlx(mat, mat.size(), 324);
+	bool solve = dlx.search(0);
+	//cout << "solved: " << solve << ";" << endl;
+	//print_matrix(mat);
+	matrix2result(sudoku, dlx.get_result(), mat);
+	//print_sudoku(sudoku);
+}
+
+void dump_sudoku(FILE* output, int sudoku[9][9]) {
+	for (int i = 0; i < 9; i++)
+	{
+		for (int j = 0; j < 9; j++)
+		{
+			fprintf(output, "%d", sudoku[i][j]);
+			fputc((j == 8 ? '\n' : ' '), output);
 		}
 	}
 }

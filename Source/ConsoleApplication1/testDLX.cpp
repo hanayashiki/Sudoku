@@ -2,7 +2,7 @@
 
 void show_result_m(DLX & dlx, vector<vector<int>> & mat);
 
-int main() {
+int fucked_main() {
 	int sudoku[9][9] =
 	{
 		4, 7, 0, 9, 0, 0, 0, 0, 0,
@@ -21,7 +21,7 @@ int main() {
 	//cout << "mat.size: " << mat.size() << endl;
 	DLX dlx(mat, mat.size(), 324);
 	bool solve = dlx.search(0);
-	cout << "solved: " << solve << ";" << endl;
+	//cout << "solved: " << solve << ";" << endl;
 	//print_matrix(mat);
 	show_result_m(dlx, mat);
 	matrix2result(sudoku, dlx.get_result(), mat);
@@ -34,10 +34,10 @@ void show_result_m(DLX & dlx, vector<vector<int>> & mat) {
 	int sum = 0;
 	vector <int> ans = dlx.get_result();
 	//cout << "result: " << ";" << endl;
-	for (int i = 0; i < ans.size(); i++) {
+	for (unsigned int i = 0; i < ans.size(); i++) {
 		//cout << ans.at(i) << " ";
 		//cout << "mat row: ";
-		for (int j = 0; j < mat[ans.at(i) - 1].size(); j++) {
+		for (unsigned int j = 0; j < mat[ans.at(i) - 1].size(); j++) {
 			sum += mat[ans.at(i) - 1][j];
 			//cout << mat[ans.at(i) - 1][j] << " ";
 		}

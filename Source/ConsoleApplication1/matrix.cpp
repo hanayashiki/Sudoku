@@ -231,7 +231,7 @@ std::vector<Point*> Matrix::rank() {
 			//cout << "at: (" << *p_x << ", " << *p_y << ")" << endl;
 		}
 	}
-	for (int i = 0; i < ranking.size(); i++) {
+	for (unsigned int i = 0; i < ranking.size(); i++) {
 		Point* p = ranking.at(i);
 		int p_x, p_y;
 		p->get_pos(&p_x, &p_y);

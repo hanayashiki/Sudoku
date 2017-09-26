@@ -32,7 +32,7 @@ void DLX::display_col(int x) const {
 }
 
 DLX::DLX(vector<vector<int>> &matrix, int m, int n)
-	: _row(m), _col(n), _updates(0)
+	: _row(m), _col(n)
 {
 	head = new Node;
 	head->left = head;
@@ -112,16 +112,18 @@ void DLX::make_from(vector<vector<int>> & matrix) {
 
 void DLX::cover(Node* c_root) // close a colomn and relevant rows
 {
-	_updates++;
 	c_root->left->right = c_root->right;
 	c_root->right->left = c_root->left;
 	Node *i, *j;
 	i = c_root->down;
+	//cout << "c_root : " << "(" << c_root->x << "," << c_root->y << ")" << endl;
 	while (i != c_root)
 	{
+		//cout << "i : close: " << "(" << i->x << "," << i->y << ")" << endl;
 		j = i->right;
 		while (j != i)
 		{
+			//cout << "j : close: " << "(" << j->x << "," << j->y << ")" << endl;
 			j->down->up = j->up;
 			j->up->down = j->down;
 			j->col_root->size--;
@@ -142,7 +144,7 @@ void DLX::recover(Node* c_root)
 		while (j != i)
 		{
 			j->col_root->size++;
-			j->down->up = i;
+			j->down->up = j;
 			j->up->down = j;
 			j = j->left;
 			//cout << "open: " << "(" << j->x << "," << j->y << ")" << endl;
@@ -176,6 +178,7 @@ bool DLX::search(int k)
 		}
 		c = c->right;
 	}
+	//cout << "cover 1" << endl;
 	cover(c_root); //close the colomn and relevant rows 
 
 	Node *current_row, *current;
@@ -188,6 +191,7 @@ bool DLX::search(int k)
 			 current = current->right) 
 		{
 			//cout << "second cover" << endl;
+			//cout << "cover 2" << endl;
 			cover(current->col_root);
 		}
 		if (search(k + 1)) {

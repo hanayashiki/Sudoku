@@ -8,7 +8,7 @@ struct Node {
 	int x, y;
 	int num; // priviledge for row roots, records the order of the row
 	int size; // for column roots, records the number of nodes 
-	Node(int i = -1) : num(i), size(0) {};//constructor  
+	Node(int i = -1) : num(i), size(0), x(0), y(0) {};//constructor  
 };
 
 class DLX {
@@ -23,14 +23,10 @@ public:
 	{
 		return result; 
 	}
-	int get_updates() const
-	{
-		return _updates;
-	}
 	void display_row(int x) const;
 	void display_col(int x) const;
 private:
 	Node* head;
 	vector<int> result;
-	int _row, _col, _updates;
+	int _row, _col;
 };
