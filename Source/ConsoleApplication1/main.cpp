@@ -38,7 +38,7 @@ void shuffle(char* str) {
 	//cout << str << endl;
 }
 
-int main(int argc, char** argv)
+int fucked_main(int argc, char** argv)
 {
 	int mission = read_argv(argc, argv);
 	fopen_s(&output, "sudoku.txt", "w");

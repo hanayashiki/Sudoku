@@ -39,6 +39,12 @@
     <ClInclude Include="cut.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="DLX.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="sudoku-m.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -60,6 +66,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="cut.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="DLX.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="testDLX.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sudoku-m.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
