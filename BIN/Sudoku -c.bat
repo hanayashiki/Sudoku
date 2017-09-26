@@ -1,0 +1,1 @@
+sudoku.exe -c 100
