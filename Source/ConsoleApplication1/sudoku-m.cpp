@@ -5,6 +5,7 @@
 
 vector<vector<int>> sudoku2matrix(int sudoku[9][9]) {
 	vector<vector<int>> mat;
+	mat.reserve(1024);
 	for (int i = 0; i < 9; i++) {
 		for (int j = 0; j < 9; j++) {
 			int entry = sudoku[i][j];
@@ -39,7 +40,7 @@ void matrix2result(int sudoku[9][9], vector<int> & ans, vector<vector<int>> & ma
 	int sz = ans.size();
 	for (int i = 0; i < sz; i++) {
 		//get vector
-		vector<int> m_r = mat.at(ans.at(i)-1);
+		vector<int> & m_r = mat.at(ans.at(i)-1);
 		//get pos
 		int sz_m_r = m_r.size();
 		int info_poses[4];

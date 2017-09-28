@@ -35,6 +35,7 @@ DLX::DLX(vector<vector<int>> &matrix, int m, int n)
 	: _row(m), _col(n)
 {
 	head = new Node;
+	pool.push_back(head);
 	head->left = head;
 	head->right = head;
 	head->up = head;
@@ -45,8 +46,10 @@ DLX::DLX(vector<vector<int>> &matrix, int m, int n)
 
 void DLX::init() {
 	Node* new_node;
+	pool.reserve(10000);
 	for (int x = 0; x < _col; x++) {
 		new_node = new Node;
+		pool.push_back(new_node);
 		new_node->up = new_node;
 		new_node->down = new_node;
 		new_node->right = head->right;
@@ -57,6 +60,7 @@ void DLX::init() {
 	}
 	for (int y = 0; y < _row; y++) {
 		new_node = new Node(_row - y);
+		pool.push_back(new_node);
 		new_node->down = head->down;
 		new_node->up = head;
 		new_node->right = NULL;
@@ -80,6 +84,7 @@ void DLX::make_from(vector<vector<int>> & matrix) {
 				continue;
 			}
 			new_node = new Node;
+			pool.push_back(new_node);
 			//set node
 			new_node->x = row;
 			new_node->y = col;
@@ -207,4 +212,11 @@ bool DLX::search(int k)
 	}
 	recover(c_root);
 	return false;
+}
+
+DLX::~DLX() {
+	int l = pool.size();
+	for (int i = 0; i < l; i++) {
+		delete pool.at(i);
+	}
 }

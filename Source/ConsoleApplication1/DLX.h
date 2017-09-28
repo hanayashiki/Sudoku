@@ -14,6 +14,7 @@ struct Node {
 class DLX {
 public:
 	DLX(vector<vector<int>> & matrix, int m, int n);
+	~DLX();
 	void init();
 	void make_from(vector<vector<int>> & matrix);
 	void cover(Node* n);
@@ -29,4 +30,5 @@ private:
 	Node* head;
 	vector<int> result;
 	int _row, _col;
+	vector<Node*> pool;
 };
