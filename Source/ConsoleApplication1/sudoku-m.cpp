@@ -79,6 +79,7 @@ void DLX_solve(int sudoku[9][9]) {
 }
 
 void dump_sudoku(FILE* output, int sudoku[9][9]) {
+	cout << "dump" << endl;
 	for (int i = 0; i < 9; i++)
 	{
 		for (int j = 0; j < 9; j++)
@@ -87,4 +88,44 @@ void dump_sudoku(FILE* output, int sudoku[9][9]) {
 			fputc((j == 8 ? '\n' : ' '), output);
 		}
 	}
+}
+
+bool check_validity(int sudoku[9][9]) {
+	int record = 0;
+	const int mask = 0x1ff; // 9 ones
+	for (int group_x = 0; group_x < 3; group_x++) {
+		for (int group_y = 0; group_y < 3; group_y++) {
+			record = 0;
+			for (int x = 3 * group_x; x < 3 * group_x + 3; x++) {
+				for (int y = 3 * group_y; y < 3 * group_y + 3; y++) {
+					int v = sudoku[x][y];
+					record |= 1 << (v - 1);
+				}
+			}
+			if (record != mask) {
+				return false;
+			}
+		}
+	}
+	for (int line = 0; line < 9; line++) {
+		record = 0;
+		for (int row = 0; row < 9; row++) {
+			int v = sudoku[line][row];
+			record |= 1 << (v - 1);
+		}
+		if (record != mask) {
+			return false;
+		}
+	}
+	for (int row = 0; row < 9; row++) {
+		record = 0;
+		for (int line = 0; line < 9; line++) {
+			int v = sudoku[line][row];
+			record |= 1 << (v - 1);
+		}
+		if (record != mask) {
+			return false;
+		}
+	}
+	return true;
 }

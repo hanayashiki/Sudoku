@@ -51,6 +51,12 @@ int main(int argc, char** argv)
 			//print_sudoku(sudoku);
 			DLX_solve(sudoku);
 			dump_sudoku(output, sudoku);
+			fputc('\n', output);
+			if (!check_validity(sudoku)) {
+				cout << "WA" << endl;
+				getchar();
+				exit(1);
+			}
 			if (DEBUG) cout << "result " << case_ << ": " << endl;
 			if (DEBUG) matrix.display();
 			if (DEBUG) cout << "vcheck: " << matrix.check_validity() << endl;
@@ -107,7 +113,7 @@ bool read_file(FILE* f, int sudoku[9][9])
 		}
 	}
 	//matrix.display();
-	//if (DEBUG) cout << "readin = " << readin << endl;
+	//cout << "readin = " << readin << endl;
 	return readin == 81;
 }
 
