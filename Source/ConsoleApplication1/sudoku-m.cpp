@@ -79,7 +79,7 @@ void DLX_solve(int sudoku[9][9]) {
 }
 
 void dump_sudoku(FILE* output, int sudoku[9][9]) {
-	cout << "dump" << endl;
+	//cout << "dump" << endl;
 	for (int i = 0; i < 9; i++)
 	{
 		for (int j = 0; j < 9; j++)
